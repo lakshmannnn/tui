@@ -1,0 +1,20 @@
+{
+  "name": "tui-e2e-assessment",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "npx playwright test tests/e2e.spec.ts --headed",
+    "test:ui": "npx playwright test tests/e2e.spec.ts --headed  --ui",
+    "test:debug": "npx playwright test tests/e2e.spec.ts --headed  --debug",
+    "test:report": "playwright show-report",
+    "seed": "ts-node ./scripts/seedStorage.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1",
+    "@types/node": "^24.8.1",
+    "playwright": "^1.56.1",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.0.0"
+  }
+}
