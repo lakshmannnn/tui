@@ -6,8 +6,8 @@ node_modules/
 /blob-report/
 /playwright/.cache/
 user-data
-tests/e2e-old1.spec.ts
-tests/e2e-old.spec.ts
-tests/UIBasics.spec.js
-tests/pdp.spec.js
-tests/client.spec.js
+/tests/e2e-old1.spec.ts
+/tests/e2e-old.spec.ts
+/tests/UIBasics.spec.js
+/tests/pdp.spec.js
+/tests/client.spec.js
