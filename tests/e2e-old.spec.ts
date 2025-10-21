@@ -83,7 +83,7 @@ test('E2E flow - TUI booking (persistent Chrome to avoid Access Denied)', async 
     const date = await home.chooseDepartureDate();
 
     const childAge = Math.floor(Math.random() * 10) + 2;
-    const rooms = await home.setRoomsAndGuests(2, childAge);
+    const rooms = await home.setRoomsAndGuests();
 
     console.log('Selected test data:', { departure, destination, date, rooms });
 
