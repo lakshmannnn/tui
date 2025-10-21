@@ -29,8 +29,10 @@ Folder structure (key files)
   - seed-profile       → persistent Chrome profile used by tests (created by seeder)
 
 Chrome Profile Settings to avoid 'Access Denied':
+
 A.Running the seeder (recommended)
 - The seeder opens a headed browser, accepts cookies, performs a minimal search and saves storageState.json and seed-profile.
+ $ npm run seed OR $ ts-node ./scripts/seedStorage.ts
 - Use real Chrome to make the profile match production behavior:
   PowerShell:
   $env:CHROME_PATH="C:\Program Files\Google\Chrome\Application\chrome.exe"
