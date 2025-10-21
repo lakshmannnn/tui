@@ -18,8 +18,6 @@ Quick install
 Folder structure (key files)
 - /tests
   - e2e.spec.ts        → main E2E test (CDP / persistent-profile fallback)
-  - UIBasics.spec.js   → smaller example tests (Playwright basics)
-  - (remove old e2e-old*.spec.ts if not needed)
 - /src/pages          → Page Objects (HomePage.ts, SearchResultsPage.ts, HotelPage.ts, BookingPage.ts)
 - /src/utils
   - shadow.ts          → helper to query nested shadow DOM (used by HomePage)
@@ -30,16 +28,8 @@ Folder structure (key files)
   - storageState.json  → saved cookies/storage (created by seeder)
   - seed-profile       → persistent Chrome profile used by tests (created by seeder)
 
-How it maps to the assessment requirements
-- TypeScript + Playwright: implemented.
-- Page Object Model: UI actions encapsulated under /src/pages.
-- Random selections: departure, destination and date chosen randomly from available UI options.
-- Rooms & Guests: selects 2 adults + 1 child; child age chosen randomly from available values.
-- Search & pick first hotel: implemented in SearchResultsPage and HotelPage.
-- Passenger validation checks: BookingPage exposes methods to trigger and read validation errors.
-- Logging: all selected test data and booking snippets are printed to console.
-
-Running the seeder (recommended)
+Chrome Profile Settings to avoid 'Access Denied':
+A.Running the seeder (recommended)
 - The seeder opens a headed browser, accepts cookies, performs a minimal search and saves storageState.json and seed-profile.
 - Use real Chrome to make the profile match production behavior:
   PowerShell:
@@ -47,7 +37,7 @@ Running the seeder (recommended)
   npm run seed
 - If seeder fails to click the cookie banner automatically, run it headed and interact with the opened browser (the script is headed so you can click).
 
-Using a persistent Chrome (CDP) if Access Denied occurs
+B.Manual: Using a persistent Chrome (CDP) if Access Denied still occurs
 - Start Chrome manually with the seeded profile and remote debugging:
   PowerShell:
   "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="C:\Automation\Playwright\tui\user-data" --no-first-run --no-default-browser-check
@@ -56,6 +46,7 @@ Using a persistent Chrome (CDP) if Access Denied occurs
 - The test includes logic to either launch a persistent context or connect over CDP to a running Chrome instance so cookies/fingerprint are preserved.
 
 Run tests
+Pre-requisite: Follow 'Chrome Profile Settings to avoid 'Access Denied'
 - Full suite (Playwright runner):
   npm run test
 - Headed E2E (single file):
@@ -91,6 +82,14 @@ Useful commands
 - Run full tests: npm run test
 - Open Playwright UI for debugging: npm run test:ui
 
-
+How the artifacts maps to the assessment requirements
+- TypeScript + Playwright: implemented.
+- Page Object Model: UI actions encapsulated under /src/pages.
+- Random selections: departure, destination and date chosen randomly from available UI options.
+- Rooms & Guests: selects 2 adults + 1 child; child age chosen randomly from available values.
+- Search & pick first hotel: implemented in SearchResultsPage and HotelPage.
+- Passenger validation checks: BookingPage exposes methods to trigger and read validation errors.
+- Logging: all selected test data and booking snippets are printed to console.
+- Assertions: wherever required ex: to verify validation errors
 
 
