@@ -47,7 +47,8 @@ B.Manual: Using a persistent Chrome (CDP) if Access Denied still occurs
   npm run test:headed
 - The test includes logic to either launch a persistent context or connect over CDP to a running Chrome instance so cookies/fingerprint are preserved.
 
-Run tests
+Run tests:
+
 Pre-requisite: Follow 'Chrome Profile Settings to avoid 'Access Denied'
 - Full suite (Playwright runner):
   npm run test
@@ -83,6 +84,8 @@ Useful commands
 - Run tests headed: npm run test:headed
 - Run full tests: npm run test
 - Open Playwright UI for debugging: npm run test:ui
+- Open Playwright in debug mode: npm run test:debug
+
 
 How the artifacts maps to the assessment requirements
 - TypeScript + Playwright: implemented.
