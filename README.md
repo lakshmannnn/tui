@@ -32,11 +32,10 @@ Chrome Profile Settings to avoid 'Access Denied':
 
 A.Running the seeder (recommended)
 - The seeder opens a headed browser, accepts cookies, performs a minimal search and saves storageState.json and seed-profile.
- $ npm run seed OR $ ts-node ./scripts/seedStorage.ts
 - Use real Chrome to make the profile match production behavior:
   PowerShell:
   $env:CHROME_PATH="C:\Program Files\Google\Chrome\Application\chrome.exe"
-  npm run seed
+ $ npm run seed OR $ ts-node ./scripts/seedStorage.ts
 - If seeder fails to click the cookie banner automatically, run it headed and interact with the opened browser (the script is headed so you can click).
 
 B.Manual: Using a persistent Chrome (CDP) if Access Denied still occurs
