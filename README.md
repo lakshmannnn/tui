@@ -97,3 +97,8 @@ How the artifacts maps to the assessment requirements
 - Assertions: wherever required ex: to verify validation errors
 
 
+Improvements:
+--Cache need to be cleared everytime we run the test as sometimes the site throws Access Denied when the site tghrew the same earlier, I mean the cookies updated in the last session are used in the new session.
+--Extra Validation checks on Pax Details page to be added
+--The Holiday details need to be shown such as 'Holiday Summary'
+--run in multiple browsers

@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 import { queryNestedShadow } from '../utils/shadow';
 
 export class HomePage {
@@ -18,6 +18,7 @@ export class HomePage {
   constructor(page: Page) {
     this.page = page;
     this.acceptCookiesBtn = page.locator('#cmCloseBanner, button:has-text("Accept"), button:has-text("Allow all")').first();
+    // this.acceptCookiesBtn = page.locator('#cmCloseBanner').first();
     this.depInput = page.getByTestId('input_departure-airport').first();
     this.depInputLon = page.getByText('London Heathrow');
     this.depInputOverlay = page.getByTestId('button_done');
@@ -49,8 +50,10 @@ export class HomePage {
       await this.depInputLon.click();
     // ***TODO: depAirport is hardcoded in above code and below code randomizes depArport but need further finetuning
     //     await this.depInput.click();
-    //   const depAirportOptions = this.page.getByTestId('airport-group').locator('.label-inline');
-
+    //   // const depAirportOptions = this.page.getByTestId('airport-group').locator('.label-inline');
+    //   const nestedShadow = this.page.locator('tui-choice-search-panel-container >>> tui-search-panel-mfe');
+    //   const depAirportOptions = nestedShadow.getByTestId('airport-group').locator('.label-inline');
+    //   console.log(depAirportOptions);
     // const depAirportOptionsCount = await depAirportOptions.count();
     //     const idx =  Math.floor(Math.random() * depAirportOptionsCount);
     //     const pick = depAirportOptions.nth(idx);
@@ -58,11 +61,11 @@ export class HomePage {
     //     console.log(idx,depAirportOptionsCount,text,depAirportOptions);
     //     await pick.click();
     // ****TODO:EoL
+
     const text = await this.depInputLon.textContent();
     await this.depInputOverlay.click();
     return text
   }
-
   async chooseRandomDestination() {
     // try to click the arrival option inside nested shadow DOM (#ALB)
     // const hosts = [
@@ -121,30 +124,34 @@ export class HomePage {
     await this.roomsGuestsBtn.click();
     const childSelectedStr = await this.page.locator('div[aria-label="nonAdults controlBlock"] span.stepper-counter').textContent();
     const childSelected = Number(childSelectedStr);
-    // Check if the Children already selected. This is to avoid any default selections using cache.
-    console.log('default children selected', childSelected);
+    console.log('Default children selected', childSelected);
+    // Evaluate random age for Child1
     let childAgeRan = Math.floor(Math.random() * 100);
     while (childAgeRan > 17) {
       const childAgeRandom = Math.floor(Math.random() * 100);
       childAgeRan = childAgeRandom;
     }
     const childAge = childAgeRan;
-    console.log('child age:', childAge)
-    // Set the Children value to 1 and select random age for Child1
+    console.log('Random child age:', childAge)
+     // Check if the Children already selected. This is to avoid any default selections using cache.
+     // if not - set the Children value to 1 and assign random age
     if (Number(childSelected) == 0) {
       await this.page.getByLabel('nonAdults plus').click();
       await this.page.getByTestId('select_child-age').click()
       await this.page.getByTestId('select_child-age').selectOption(String(childAge));
     }
+    // Check if the Children value set to greater than 1
     else if (Number(childSelected) != 1) {
       while (Number(childSelected) != 1) {
         await this.page.getByLabel('nonAdults minus').click();
       }
+      // Set Child age to random vlue since the Children value set to 1 now.
       await this.page.getByTestId('select_child-age').click()
       await this.page.getByTestId('select_child-age').selectOption(String(childAge));
     }
     // close rooms overlay if close/Done exists
     const done = this.page.getByTestId('button_done').first();
+    console.log(`Number of Children and the Child age selected in Search panel - 'Children': ${childSelected} , 'Child1': ${childAge}`);
     if (await done.count()) await done.click();
     return { adults, childAge };
   }

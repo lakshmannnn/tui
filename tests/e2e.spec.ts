@@ -22,7 +22,7 @@ async function connectToRunningChromeOrPersistent(userDataDir: string, chromePat
     return { browser: undefined as any, context };
   } catch (e) {
     // fall through to CDP fallback
-    console.log('launchPersistentContext failed, will try CDP connect:', (e as Error).message);
+    console.log('launchPersistentContext failed, will try CDP[Chrome DevTools Protocol] connect:', (e as Error).message);
   }
 
   // Fallback: try connecting to a Chrome started with --remote-debugging-port=9222
@@ -39,6 +39,12 @@ async function connectToRunningChromeOrPersistent(userDataDir: string, chromePat
   }
 }
 
+// applyAntiBotScriptsInline injects a Playwright context-level init script that runs before any page script,
+// modifying a few navigator/window properties to make the automated browser look more like a real user browser:
+// 1.navigator.webdriver -> false
+// 2.window.chrome -> provide a minimal chrome.runtime object
+// 3.navigator.languages -> return ['en-GB','en']
+// This is a surface-level spoof only, to trick Modern bot protections (Ex:Akamai)
 async function applyAntiBotScriptsInline(context: BrowserContext) {
   await context.addInitScript(() => {
     try { Object.defineProperty(navigator, 'webdriver', { get: () => false }); } catch (e) {}
