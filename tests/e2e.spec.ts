@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, Page } from '@playwright/test';
 import { chromium, Browser, BrowserContext } from 'playwright';
 import path from 'path';
 import { HomePage } from '../src/pages/HomePage';
@@ -41,6 +41,7 @@ async function connectToRunningChromeOrPersistent(userDataDir: string, chromePat
 test('E2E flow - TUI PDP booking (CDP / persistent profile)', async () => {
   const chromePath = CHROME_DEFAULT;
   const { browser, context } = await connectToRunningChromeOrPersistent(USER_DATA_DIR, chromePath);
+  let page: Page | undefined;
 
   try {
     // try { await applyAntiBotScripts(context); } catch { }
@@ -80,7 +81,11 @@ test('E2E flow - TUI PDP booking (CDP / persistent profile)', async () => {
     console.log('\n ****************** \n', summary, '\n ****************** \n Accom Details: \n ', await page.locator('[aria-label="Accomodation Details"]').innerText(), '\n *************************** \n  OB Flight Details: \n', await page.locator('[aria-label="outBound Flight Details0"]').innerText(), '\n *************************** \n  IB Flight Details: \n', await page.locator('[aria-label="inBound Flight Details0"]').innerText(), '\n *************************** \n Price: \n', await page.locator('li.PriceSummaryPanel__title').innerText());
 
   } finally {
-    try { await context.close(); } catch { }
-    try { if (browser) await (browser as Browser).close(); } catch { }
+     try {
+      if (page && !page.isClosed()) {
+        await page.close().catch(() => {});
+      }
+    } catch {
+    }
   }
 });
