@@ -5,7 +5,7 @@ export class BookingPage {
 
   async selectFlight() {
     // pick first selectable flight
-    const flight = this.page.locator('button:has-text("Select flight"), button:has-text("Continue"), .flight-card').first();
+    const flight = this.page.locator('button:has-text("Select flight"), button:has-text("Continue To Passenger Details"), .flight-card').first();
     await flight.click();
     await this.page.waitForLoadState('domcontentloaded');
   }

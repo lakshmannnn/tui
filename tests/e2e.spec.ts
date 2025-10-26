@@ -22,7 +22,7 @@ async function connectToRunningChromeOrPersistent(userDataDir: string, chromePat
     return { browser: undefined as any, context };
   } catch (e) {
     // fall through to CDP fallback
-    console.log('launchPersistentContext failed, will try CDP[Chrome DevTools Protocol] connect:', (e as Error).message);
+    // console.log('launchPersistentContext failed, will try CDP[Chrome DevTools Protocol] connect:', (e as Error).message);
   }
 
   // Fallback: try connecting to a Chrome started with --remote-debugging-port=9222
@@ -64,15 +64,16 @@ test('E2E flow - TUI PDP booking (CDP / persistent profile)', async () => {
 
     const page = await context.newPage();
 
-    page.on('response', async (response) => {
-      const url = response.url();
-      const status = response.status();
-      if (status >= 400 && url.includes('tui')) {
-        console.log(`Response ${status} for: ${url}`);
-        console.log('Response headers:', response.headers());
-        try { console.log((await response.text()).slice(0, 2000)); } catch { }
-      }
-    });
+    // It logs failed HTTP responses (status >= 400) for tui URLs so you can debug server-side blocks (403/Access Denied from Akamai), missing resources, or unexpected errors.
+    // page.on('response', async (response) => {
+    //   const url = response.url();
+    //   const status = response.status();
+    //   if (status >= 400 && url.includes('tui')) {
+    //     console.log(`Response ${status} for: ${url}`);
+    //     console.log('Response headers:', response.headers());
+    //     try { console.log((await response.text()).slice(0, 2000)); } catch { }
+    //   }
+    // });
 
     const home = new HomePage(page);
     await home.open();
