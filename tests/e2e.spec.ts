@@ -1,5 +1,5 @@
 import { test, expect, Page } from '@playwright/test';
-import { chromium, Browser, BrowserContext } from 'playwright';
+import { chromium } from 'playwright';
 import path from 'path';
 import { HomePage } from '../src/pages/HomePage';
 import { SearchResultsPage } from '../src/pages/SearchResultsPage';
@@ -11,18 +11,18 @@ const USER_DATA_DIR = path.join(__dirname, '..', 'user-data');
 
 async function connectToRunningChromeOrPersistent(userDataDir: string, chromePath: string) {
   // Try persistent Playwright context first
-  // try {
-  //   const context = await chromium.launchPersistentContext(userDataDir, {
-  //     headless: false,
-  //     executablePath: chromePath,
-  //     ignoreDefaultArgs: ['--enable-automation'],
-  //     args: ['--disable-blink-features=AutomationControlled', '--no-first-run', '--no-default-browser-check']
-  //   });
-  //   return { browser: undefined as any, context };
-  // } catch (e) {
-  //   // fall through to CDP fallback
-  //   // console.log('launchPersistentContext failed, will try CDP[Chrome DevTools Protocol] connect:', (e as Error).message);
-  // }
+  try {
+    const context = await chromium.launchPersistentContext(userDataDir, {
+      headless: false,
+      executablePath: chromePath,
+      ignoreDefaultArgs: ['--enable-automation'],
+      args: ['--disable-blink-features=AutomationControlled', '--no-first-run', '--no-default-browser-check']
+    });
+    return { browser: undefined as any, context };
+  } catch (e) {
+    // fall through to CDP fallback
+    // console.log('launchPersistentContext failed, will try CDP[Chrome DevTools Protocol] connect:', (e as Error).message);
+  }
 
   // Fallback: try connecting to a Chrome started with --remote-debugging-port=9222
   try {
