@@ -77,7 +77,8 @@ test('E2E flow - TUI PDP booking (CDP / persistent profile)', async () => {
     expect(validationTriggered).toBe(true);
 
     const summary = await page.locator('div.HolidaySummary__holidaySummary a h2 .sections__title, .booking-summary, .summary').first().innerText().catch(() => 'Summary unavailable');
-    console.log('Booking summary snippet:', summary);
+    console.log('\n ****************** \n', summary, '\n ****************** \n Accom Details: \n ', await page.locator('[aria-label="Accomodation Details"]').innerText(), '\n *************************** \n  OB Flight Details: \n', await page.locator('[aria-label="outBound Flight Details0"]').innerText(), '\n *************************** \n  IB Flight Details: \n', await page.locator('[aria-label="inBound Flight Details0"]').innerText(), '\n *************************** \n Price: \n', await page.locator('li.PriceSummaryPanel__title').innerText());
+
   } finally {
     try { await context.close(); } catch { }
     try { if (browser) await (browser as Browser).close(); } catch { }
