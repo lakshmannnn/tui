@@ -40,6 +40,18 @@ export class HomePage {
     if (await this.acceptCookiesBtn.count()) {
       try { await this.acceptCookiesBtn.click({ timeout: 3000 }); } catch { }
     }
+    // ***Below is to show clicking on Accept button
+// const acceptBtnText = await this.page.locator('button:has-text("Accept")').textContent();
+// console.log('acceptBtnText',acceptBtnText)
+//  if(acceptBtnText){
+//   console.log('Accept button found')
+//     //await expect(this.acceptCookiesBtn).toBeVisible();
+//     await this.acceptCookiesBtn.click({ timeout: 3000 });
+//     console.log('Clicked - Accept to accept the cookies');
+//     }
+//     else {
+//       console.log('There is no Accept button found')
+//     }
   }
 
   // select by choosing visible options from dropdown lists (random pick)
