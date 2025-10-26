@@ -5,6 +5,7 @@ import { HomePage } from '../src/pages/HomePage';
 import { SearchResultsPage } from '../src/pages/SearchResultsPage';
 import { HotelPage } from '../src/pages/HotelPage';
 import { BookingPage } from '../src/pages/BookingPage';
+import { text } from 'stream/consumers';
 
 const CHROME_DEFAULT = process.env.CHROME_PATH || 'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe';
 const USER_DATA_DIR = path.join(__dirname, '..', 'user-data');
@@ -76,14 +77,18 @@ test('E2E flow - TUI PDP booking (CDP / persistent profile)', async () => {
     const validationTriggered = await booking.triggerPassengerValidation();
     console.log('Passenger validation errors present:', validationTriggered);
     expect(validationTriggered).toBe(true);
-
+    console.log('Errors with Please enter...:', await page.locator('text=Please select').innerText());
+    console.log('Errors with Please enter...:', await page.locator('text=Please enter').allInnerTexts());
+    console.log('Errors with Please use...:', await page.locator('text=Please use').allInnerTexts());
+    console.log('Erros with This field is required :', await page.locator('text=This field is required').allInnerTexts())
+    console.log('Errors on Information box checkbox...:', await page.locator('.ImportantInformation__error_message_red').innerText());
     const summary = await page.locator('div.HolidaySummary__holidaySummary a h2 .sections__title, .booking-summary, .summary').first().innerText().catch(() => 'Summary unavailable');
     console.log('\n ****************** \n', summary, '\n ****************** \n Accom Details: \n ', await page.locator('[aria-label="Accomodation Details"]').innerText(), '\n *************************** \n  OB Flight Details: \n', await page.locator('[aria-label="outBound Flight Details0"]').innerText(), '\n *************************** \n  IB Flight Details: \n', await page.locator('[aria-label="inBound Flight Details0"]').innerText(), '\n *************************** \n Price: \n', await page.locator('li.PriceSummaryPanel__title').innerText());
 
   } finally {
-     try {
+    try {
       if (page && !page.isClosed()) {
-        await page.close().catch(() => {});
+        await page.close().catch(() => { });
       }
     } catch {
     }
