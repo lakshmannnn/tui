@@ -7,9 +7,8 @@
     "test:headed": "npx playwright test tests/e2e.spec.ts --headed",
     "test:ui": "npx playwright test tests/e2e.spec.ts --headed  --ui",
     "test:debug": "npx playwright test tests/e2e.spec.ts --headed  --debug",
-    "test:report": "playwright show-report",
-    "seed": "ts-node ./scripts/seedStorage.ts"
-  },
+    "test:report": "playwright show-report"
+    },
   "devDependencies": {
     "@playwright/test": "^1.56.1",
     "@types/node": "^24.8.1",

@@ -45,21 +45,21 @@ async function connectToRunningChromeOrPersistent(userDataDir: string, chromePat
 // 2.window.chrome -> provide a minimal chrome.runtime object
 // 3.navigator.languages -> return ['en-GB','en']
 // This is a surface-level spoof only, to trick Modern bot protections (Ex:Akamai)
-async function applyAntiBotScriptsInline(context: BrowserContext) {
-  await context.addInitScript(() => {
-    try { Object.defineProperty(navigator, 'webdriver', { get: () => false }); } catch (e) {}
-    try { (window as any).chrome = (window as any).chrome || { runtime: {} }; } catch (e) {}
-    try { Object.defineProperty(navigator, 'languages', { get: () => ['en-GB', 'en'] }); } catch (e) {}
-  });
-  await Promise.resolve();
-}
+// async function applyAntiBotScriptsInline(context: BrowserContext) {
+//   await context.addInitScript(() => {
+//     try { Object.defineProperty(navigator, 'webdriver', { get: () => false }); } catch (e) {}
+//     try { (window as any).chrome = (window as any).chrome || { runtime: {} }; } catch (e) {}
+//     try { Object.defineProperty(navigator, 'languages', { get: () => ['en-GB', 'en'] }); } catch (e) {}
+//   });
+//   await Promise.resolve();
+// }
 
 test('E2E flow - TUI PDP booking (CDP / persistent profile)', async () => {
   const chromePath = CHROME_DEFAULT;
   const { browser, context } = await connectToRunningChromeOrPersistent(USER_DATA_DIR, chromePath);
 
   try {
-    try { await applyAntiBotScripts(context); } catch { await applyAntiBotScriptsInline(context); }
+    // try { await applyAntiBotScripts(context); } catch { await applyAntiBotScriptsInline(context); }
     await context.setExtraHTTPHeaders({ 'accept-language': 'en-GB,en;q=0.9' });
 
     const page = await context.newPage();

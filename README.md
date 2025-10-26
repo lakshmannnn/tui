@@ -8,7 +8,7 @@ Prerequisites
 - Node 18+
 - npm
 - Playwright browsers: npx playwright install
-- (Optional but recommended) Real Chrome for seeding/avoiding bot protections
+- (Optional but recommended) Real Chrome to avoid bot protections
 
 Quick install
 1. cd c:\Automation\Playwright\tui
@@ -22,24 +22,11 @@ Folder structure (key files)
 - /src/utils
   - shadow.ts          → helper to query nested shadow DOM (used by HomePage)
   - antiBot.ts         → optional anti-bot init scripts
-- /scripts
-  - seedStorage.ts     → seeder that creates a persistent profile and storageState.json
-- /user-data
-  - storageState.json  → saved cookies/storage (created by seeder)
-  - seed-profile       → persistent Chrome profile used by tests (created by seeder)
 
 Chrome Profile Settings to avoid 'Access Denied':
 
-A.Running the seeder (recommended)
-- The seeder opens a headed browser, accepts cookies, performs a minimal search and saves storageState.json and seed-profile.
-- Use real Chrome to make the profile match production behavior:
-  PowerShell:
-  $env:CHROME_PATH="C:\Program Files\Google\Chrome\Application\chrome.exe"
- $ npm run seed OR $ ts-node ./scripts/seedStorage.ts
-- If seeder fails to click the cookie banner automatically, run it headed and interact with the opened browser (the script is headed so you can click).
-
-B.Manual: Using a persistent Chrome (CDP) if Access Denied still occurs
-- Start Chrome manually with the seeded profile and remote debugging:
+Manual: Using a persistent Chrome (CDP)
+- Start Chrome manually with the remote debugging:
   PowerShell:
   "C:\Program Files\Google\Chrome\Application\chrome.exe" --remote-debugging-port=9222 --user-data-dir="C:\Automation\Playwright\tui\user-data" --no-first-run --no-default-browser-check
 - Then run tests:
@@ -59,14 +46,11 @@ Pre-requisite: Follow 'Chrome Profile Settings to avoid 'Access Denied'
   npm run test:ui
 
 Common troubleshooting
-- storageState.json remains empty:
-  - The seeder must interact with the same profile Playwright uses; ensure the seeder ran and saved to /user-data/storageState.json.
-  - If seeder did not click cookie banner (iframe or selector mismatch), run seeder headed and click cookie accept manually.
-- ECONNREFUSED 127.0.0.1:9222:
+
   - Start Chrome with --remote-debugging-port=9222 before running tests that use CDP.
   - Ensure no other process blocks port 9222 and close other Chrome instances using the same user-data-dir.
 - Still blocked (Akamai/Access Denied):
-  - Use the persistent profile (seed-profile) and/or run seeder from the same network/IP as tests.
+  - Use the persistent profile
   - If automation cannot bypass protections, run tests against a staging environment or request allowlisting.
 
 Best practices & notes
@@ -79,7 +63,6 @@ Best practices & notes
 Useful commands
 - Install deps: npm install
 - Install Playwright browsers: npx playwright install
-- Seed storage/profile: npm run seed
 - Run tests headed: npm run test:headed
 - Run full tests: npm run test
 - Open Playwright UI for debugging: npm run test:ui
