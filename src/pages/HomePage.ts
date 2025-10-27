@@ -41,17 +41,17 @@ export class HomePage {
       try { await this.acceptCookiesBtn.click({ timeout: 3000 }); } catch { }
     }
     // ***Below is to show clicking on Accept button
-// const acceptBtnText = await this.page.locator('button:has-text("Accept")').textContent();
-// console.log('acceptBtnText',acceptBtnText)
-//  if(acceptBtnText){
-//   console.log('Accept button found')
-//     //await expect(this.acceptCookiesBtn).toBeVisible();
-//     await this.acceptCookiesBtn.click({ timeout: 3000 });
-//     console.log('Clicked - Accept to accept the cookies');
-//     }
-//     else {
-//       console.log('There is no Accept button found')
-//     }
+    // const acceptBtnText = await this.page.locator('button:has-text("Accept")').textContent();
+    // console.log('acceptBtnText',acceptBtnText)
+    //  if(acceptBtnText){
+    //   console.log('Accept button found')
+    //     //await expect(this.acceptCookiesBtn).toBeVisible();
+    //     await this.acceptCookiesBtn.click({ timeout: 3000 });
+    //     console.log('Clicked - Accept to accept the cookies');
+    //     }
+    //     else {
+    //       console.log('There is no Accept button found')
+    //     }
   }
 
   // select by choosing visible options from dropdown lists (random pick)
@@ -109,7 +109,7 @@ export class HomePage {
     const count = await candidates.count().catch(() => 0);
     if (count > 0) {
       const pick = candidates.nth(0);
-       const text = (await pick.innerText()).trim();
+      const text = (await pick.innerText()).trim();
       await pick.click().catch(() => {});
       return text;
     }
@@ -145,22 +145,23 @@ export class HomePage {
     }
     const childAge = childAgeRan;
     console.log('Random child age:', childAge)
-     // Check if the Children already selected. This is to avoid any default selections using cache.
-     // if not - set the Children value to 1 and assign random age
+    // Check if the Children already selected. This is to avoid any default selections using cache.
+    // if not - set the Children value to 1 and assign random age
     if (Number(childSelected) == 0) {
       await this.page.getByLabel('nonAdults plus').click();
       await this.page.getByTestId('select_child-age').click()
       await this.page.getByTestId('select_child-age').selectOption(String(childAge));
+      childSelected = childSelected + 1;
     }
     // Check if the Children value set to greater than 1. If so, set Children to 1.
     else if (Number(childSelected) != 1) {
       while (Number(childSelected) != 1) {
         await this.page.getByLabel('nonAdults minus').click();
+        childSelected = childSelected + 1;
       }
       // Set Child age to random value since the Children value set to 1 now.
       await this.page.getByTestId('select_child-age').click()
       await this.page.getByTestId('select_child-age').selectOption(String(childAge));
-       childSelected = childSelected+1;
     }
     // close rooms overlay if close/Done exists
     const done = this.page.getByTestId('button_done').first();
