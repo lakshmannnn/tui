@@ -135,7 +135,7 @@ export class HomePage {
     const adults = 2;
     await this.roomsGuestsBtn.click();
     const childSelectedStr = await this.page.locator('div[aria-label="nonAdults controlBlock"] span.stepper-counter').textContent();
-    const childSelected = Number(childSelectedStr);
+    let childSelected = Number(childSelectedStr);
     console.log('Default children selected', childSelected);
     // Evaluate random age for Child1
     let childAgeRan = Math.floor(Math.random() * 100);
@@ -152,14 +152,15 @@ export class HomePage {
       await this.page.getByTestId('select_child-age').click()
       await this.page.getByTestId('select_child-age').selectOption(String(childAge));
     }
-    // Check if the Children value set to greater than 1
+    // Check if the Children value set to greater than 1. If so, set Children to 1.
     else if (Number(childSelected) != 1) {
       while (Number(childSelected) != 1) {
         await this.page.getByLabel('nonAdults minus').click();
       }
-      // Set Child age to random vlue since the Children value set to 1 now.
+      // Set Child age to random value since the Children value set to 1 now.
       await this.page.getByTestId('select_child-age').click()
       await this.page.getByTestId('select_child-age').selectOption(String(childAge));
+       childSelected = childSelected+1;
     }
     // close rooms overlay if close/Done exists
     const done = this.page.getByTestId('button_done').first();
