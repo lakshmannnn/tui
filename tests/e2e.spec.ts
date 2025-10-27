@@ -78,22 +78,22 @@ test('E2E flow - TUI PDP booking (CDP / persistent profile)', async () => {
     console.log('Passenger validation errors present:', validationTriggered);
     expect(validationTriggered).toBe(true);
     console.log('\n ***********ERRORS***********\n Errors with Please select...:', await page.locator('text=Please select').allInnerTexts());
-    // expect(await page.locator('text=Please select').allInnerTexts()).toContain("Please select a title.");
+    expect(await page.locator('text=Please select').allInnerTexts()).toContain("Please select a title.");
 
     console.log('Errors with Please enter...:', await page.locator('text=Please enter').allInnerTexts());
-    // expect(await page.locator('text=Please enter').allInnerTexts()).toContain('[/Please enter .*/]');
+    expect(await page.locator('text=Please enter').allInnerTexts()).toContain("Please enter an address");
 
     console.log('Errors with Please use...:', await page.locator('text=Please use').allInnerTexts());
-    // expect(await page.locator('text=Please use').allInnerTexts()).toContain('/Please use .*/');
+    expect(await page.locator('text=Please use').allInnerTexts()).toContain("Please use the format DD/MM/YYYY");
 
     console.log('Erros with This field is required :', await page.locator('text=This field is required').allInnerTexts())
-    // expect(await page.locator('text=This field is required').allInnerTexts()).toContain('/This field is required .*/')
+    expect(await page.locator('text=This field is required').allInnerTexts()).toContain('This field is required')
 
     console.log('Errors on Important Information checkbox...:', await page.locator('.ImportantInformation__error_message_red').innerText());
-    // expect(await page.locator('.ImportantInformation__error_message_red').allInnerTexts()).toContain('/.* forget to tick the important .*/')
+    expect(await page.locator('.ImportantInformation__error_message_red').allInnerTexts()).toContain("Don't forget to tick the important information box to confirm you've read and understood it.");
 
     console.log('Main error message with number of validation errors :', await page.locator('text=Oops, looks like you need to fix').innerText())
-    // expect(await page.locator('text=Oops, looks like you need to fix').allInnerTexts()).toContain('/Oops, looks like you .*/');
+    expect(await page.locator('text=Oops, looks like you need to fix').allInnerTexts()).toContain("Oops, looks like you need to fix 15 field(s) above.");
 
     const summary = await page.locator('div.HolidaySummary__holidaySummary a h2 .sections__title, .booking-summary, .summary').first().innerText().catch(() => 'Summary unavailable');
     console.log('\n ****************** \n', summary, '\n ****************** \n Accom Details: \n ', await page.locator('[aria-label="Accomodation Details"]').innerText(), '\n *************************** \n  OB Flight Details: \n', await page.locator('[aria-label="outBound Flight Details0"]').innerText(), '\n *************************** \n  IB Flight Details: \n', await page.locator('[aria-label="inBound Flight Details0"]').innerText(), '\n *************************** \n Price: \n', await page.locator('li.PriceSummaryPanel__title').innerText());
