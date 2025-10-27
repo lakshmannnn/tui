@@ -91,9 +91,12 @@ test('E2E flow - TUI PDP booking (CDP / persistent profile)', async () => {
 
     console.log('Errors on Important Information checkbox...:', await page.locator('.ImportantInformation__error_message_red').innerText());
     expect(await page.locator('.ImportantInformation__error_message_red').allInnerTexts()).toContain("Don't forget to tick the important information box to confirm you've read and understood it.");
+    await expect( page.locator('.ImportantInformation__error_message_red')).toContainText(/.* forget to tick the important information box .*/);
 
     console.log('Main error message with number of validation errors :', await page.locator('text=Oops, looks like you need to fix').innerText())
     expect(await page.locator('text=Oops, looks like you need to fix').allInnerTexts()).toContain("Oops, looks like you need to fix 15 field(s) above.");
+    await expect( page.locator('text=Oops, looks like you need to fix')).toContainText(/Oops, looks like you need to fix .*/);
+    await expect( page.locator('text=Oops, looks like you need to fix')).toHaveText(/Oops, looks like you need to fix .*/);
 
     const summary = await page.locator('div.HolidaySummary__holidaySummary a h2 .sections__title, .booking-summary, .summary').first().innerText().catch(() => 'Summary unavailable');
     console.log('\n ****************** \n', summary, '\n ****************** \n Accom Details: \n ', await page.locator('[aria-label="Accomodation Details"]').innerText(), '\n *************************** \n  OB Flight Details: \n', await page.locator('[aria-label="outBound Flight Details0"]').innerText(), '\n *************************** \n  IB Flight Details: \n', await page.locator('[aria-label="inBound Flight Details0"]').innerText(), '\n *************************** \n Price: \n', await page.locator('li.PriceSummaryPanel__title').innerText());
